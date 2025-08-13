@@ -24,8 +24,7 @@ export default function Banner({ item, index }: BannerProps) {
           }}
         />
         {/* Dark overlay for better text readability */}
-        <div className="absolute inset-0 bg-black/50" />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
+        <div className="absolute inset-0 bg-black/60" />
       </div>
 
       {/* Content */}
@@ -34,8 +33,8 @@ export default function Banner({ item, index }: BannerProps) {
           <div className="max-w-2xl">
             {/* Status Badge */}
             <div className="flex items-center space-x-2 mb-4">
-              <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
-              <span className="text-red-400 font-semibold text-sm uppercase tracking-wider">
+              <div className="w-2 h-2 rounded-full animate-pulse" style={{ backgroundColor: '#FF2400' }}></div>
+              <span className="font-semibold text-sm uppercase tracking-wider" style={{ color: '#FF2400' }}>
                 Featured Anime
               </span>
             </div>
@@ -103,7 +102,8 @@ export default function Banner({ item, index }: BannerProps) {
             <div className="flex flex-col sm:flex-row gap-4">
               <Link
                 href={`/anime/${item.id}`}
-                className="inline-flex items-center justify-center px-8 py-4 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-purple-500/25"
+                className="inline-flex items-center justify-center px-8 py-4 text-white font-semibold rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-xl"
+                style={{ backgroundColor: '#800020' }}
               >
                 <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
                   <path d="M8 5v10l7-5-7-5z"/>

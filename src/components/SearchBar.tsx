@@ -27,7 +27,19 @@ export default function SearchBar({ className = '', placeholder = 'Search anime.
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder={placeholder}
-          className="w-full px-4 py-3 pl-12 pr-4 bg-gray-900/50 backdrop-blur-sm border border-gray-700/50 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-purple-500/50 focus:ring-2 focus:ring-purple-500/20 transition-all duration-300"
+          className="w-full px-4 py-3 pl-12 pr-4 bg-gray-900/50 backdrop-blur-sm border border-gray-700/50 rounded-lg text-white placeholder-gray-400 focus:outline-none transition-all duration-300"
+          style={{
+            '--focus-border-color': '#FF2400',
+            '--focus-ring-color': 'rgba(255, 36, 0, 0.2)'
+          } as React.CSSProperties}
+          onFocus={(e) => {
+            e.target.style.borderColor = '#FF2400';
+            e.target.style.boxShadow = '0 0 0 2px rgba(255, 36, 0, 0.2)';
+          }}
+          onBlur={(e) => {
+            e.target.style.borderColor = '';
+            e.target.style.boxShadow = '';
+          }}
         />
         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
           <svg
@@ -46,7 +58,9 @@ export default function SearchBar({ className = '', placeholder = 'Search anime.
         </div>
         <button
           type="submit"
-          className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-purple-400 transition-colors"
+          className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 transition-colors"
+          onMouseEnter={(e) => e.currentTarget.style.color = '#FF2400'}
+          onMouseLeave={(e) => e.currentTarget.style.color = ''}
         >
           <svg
             className="h-5 w-5"

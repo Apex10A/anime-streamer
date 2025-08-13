@@ -19,10 +19,8 @@ const normalizeAnime = (anime: Anime): Anime => ({
 });
 
 export default function Home() {
-  // Fetch data from the real API
   const { data: homeData, loading, error } = useFetch<HomeApiResponse>('/api/');
 
-  // Extract data from API response with fallbacks
   const spotlights = homeData?.results?.spotlights?.map(normalizeAnime) || [];
   const trending = homeData?.results?.trending?.map(normalizeAnime) || [];
   const topAiring = homeData?.results?.topAiring?.map(normalizeAnime) || [];
@@ -39,7 +37,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen mx-4">
-      {/* <Navbar /> */}
+      <Navbar />
       <HeroSection featuredAnimes={spotlights} />
       
       {/* Stats Section */}

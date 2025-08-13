@@ -17,9 +17,8 @@ interface HeroSectionProps {
 export default function HeroSection({ featuredAnimes = [] }: HeroSectionProps) {
   return (
     <section className="relative h-[600px] px-4 max-[1390px]:h-[530px] max-[1300px]:h-[500px] max-md:h-[420px] overflow-hidden bg-black">
-      {/* Navigation Buttons */}
       <div className={`absolute right-5 top-1/2 transform -translate-y-1/2 flex flex-col space-y-3 z-20 ${styles.navigationButtons}`}>
-        <div className={`${styles.buttonNext} button-next w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md flex items-center justify-center transition-colors duration-300`}></div>
+        <div className={`${styles.buttonNext} button-next w-10 h-10 rounded-full bg-white/10 hover:bg-[#FF2400] backdrop-blur-md flex items-center justify-center transition-colors duration-300`}></div>
         <div className={`${styles.buttonPrev} button-prev w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md flex items-center justify-center transition-colors duration-300`}></div>
       </div>
 
@@ -45,7 +44,7 @@ export default function HeroSection({ featuredAnimes = [] }: HeroSectionProps) {
           modules={[Navigation, Autoplay, Pagination]}
           className={`h-full ${styles.heroSwiper}`}
           style={{
-            "--swiper-pagination-color": "#9333ea",
+            "--swiper-pagination-color": "#FF2400",
             "--swiper-pagination-bullet-inactive-color": "#ffffff",
             "--swiper-pagination-bullet-inactive-opacity": "0.3",
           } as React.CSSProperties}

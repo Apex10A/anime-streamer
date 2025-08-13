@@ -11,7 +11,7 @@ export default function LoadingSpinner({ size = 'md', className = '' }: LoadingS
   };
 
   return (
-    <div className={`inline-block animate-spin rounded-full border-2 border-solid border-purple-500 border-r-transparent ${sizeClasses[size]} ${className}`}>
+    <div className={`inline-block animate-spin rounded-full border-2 border-solid border-r-transparent ${sizeClasses[size]} ${className}`} style={{ borderColor: '#FF2400', borderRightColor: 'transparent' }}>
       <span className="sr-only">Loading...</span>
     </div>
   );
