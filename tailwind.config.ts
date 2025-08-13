@@ -45,8 +45,8 @@ export default {
           },
         },
         "pulse-glow": {
-          "0%, 100%": { boxShadow: "0 0 20px rgba(147, 51, 234, 0.3)" },
-          "50%": { boxShadow: "0 0 30px rgba(147, 51, 234, 0.6)" },
+          "0%, 100%": { boxShadow: "0 0 20px rgba(255, 36, 0, 0.3)" },
+          "50%": { boxShadow: "0 0 30px rgba(255, 36, 0, 0.6)" },
         },
         slideInUp: {
           from: {

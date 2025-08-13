@@ -10,7 +10,19 @@ interface AnimeCardProps {
 export default function AnimeCard({ anime, className = '' }: AnimeCardProps) {
   return (
     <Link href={`/anime/${anime.id}`} className={`group ${className}`}>
-      <div className="relative overflow-hidden rounded-lg bg-gray-900/50 backdrop-blur-sm border border-gray-800/50 hover:border-purple-500/50 transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-purple-500/20">
+      <div className="relative overflow-hidden rounded-lg bg-gray-900/50 backdrop-blur-sm border border-gray-800/50 transition-all duration-300 hover:scale-105 hover:shadow-2xl" 
+           style={{ 
+             '--hover-border-color': 'rgba(255, 36, 0, 0.5)',
+             '--hover-shadow-color': 'rgba(255, 36, 0, 0.2)'
+           } as React.CSSProperties}
+           onMouseEnter={(e) => {
+             e.currentTarget.style.borderColor = 'rgba(255, 36, 0, 0.5)';
+             e.currentTarget.style.boxShadow = '0 25px 50px -12px rgba(255, 36, 0, 0.2)';
+           }}
+           onMouseLeave={(e) => {
+             e.currentTarget.style.borderColor = '';
+             e.currentTarget.style.boxShadow = '';
+           }}>
         <div className="relative aspect-[3/4] overflow-hidden">
           <Image
             src={anime.image || anime.poster || '/placeholder-anime.svg'}
@@ -27,7 +39,7 @@ export default function AnimeCard({ anime, className = '' }: AnimeCardProps) {
           
           {/* Episode count badge */}
           {anime.totalEpisodes && (
-            <div className="absolute top-2 right-2 bg-purple-600/90 backdrop-blur-sm text-white text-xs px-2 py-1 rounded-full font-medium">
+            <div className="absolute top-2 right-2 backdrop-blur-sm text-white text-xs px-2 py-1 rounded-full font-medium" style={{ backgroundColor: 'rgba(255, 36, 0, 0.9)' }}>
               {anime.totalEpisodes} EP
             </div>
           )}
@@ -47,7 +59,7 @@ export default function AnimeCard({ anime, className = '' }: AnimeCardProps) {
         </div>
         
         <div className="p-4">
-          <h3 className="font-semibold text-white text-sm line-clamp-2 mb-2 group-hover:text-purple-300 transition-colors">
+          <h3 className="font-semibold text-white text-sm line-clamp-2 mb-2 transition-colors group-hover:text-red-300">
             {anime.title}
           </h3>
           

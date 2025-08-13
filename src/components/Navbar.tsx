@@ -13,29 +13,29 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2 group">
-            <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform" style={{ backgroundColor: '#FF2400' }}>
               <span className="text-white font-bold text-lg">L</span>
             </div>
-            <span className="text-xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+            <span className="text-xl font-bold" style={{ color: '#FF2400' }}>
               Luffy
             </span>
           </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            <Link href="/" className="text-gray-300 hover:text-purple-400 transition-colors font-medium">
+            <Link href="/" className="text-gray-300 transition-colors font-medium" style={{ '--hover-color': '#FF2400' } as React.CSSProperties} onMouseEnter={(e) => e.currentTarget.style.color = '#FF2400'} onMouseLeave={(e) => e.currentTarget.style.color = ''}>
               Home
             </Link>
-            <Link href="/trending" className="text-gray-300 hover:text-purple-400 transition-colors font-medium">
+            <Link href="/trending" className="text-gray-300 transition-colors font-medium" onMouseEnter={(e) => e.currentTarget.style.color = '#FF2400'} onMouseLeave={(e) => e.currentTarget.style.color = ''}>
               Trending
             </Link>
-            <Link href="/popular" className="text-gray-300 hover:text-purple-400 transition-colors font-medium">
+            <Link href="/popular" className="text-gray-300 transition-colors font-medium" onMouseEnter={(e) => e.currentTarget.style.color = '#FF2400'} onMouseLeave={(e) => e.currentTarget.style.color = ''}>
               Popular
             </Link>
-            <Link href="/movies" className="text-gray-300 hover:text-purple-400 transition-colors font-medium">
+            <Link href="/movies" className="text-gray-300 transition-colors font-medium" onMouseEnter={(e) => e.currentTarget.style.color = '#FF2400'} onMouseLeave={(e) => e.currentTarget.style.color = ''}>
               Movies
             </Link>
-            <Link href="/genres" className="text-gray-300 hover:text-purple-400 transition-colors font-medium">
+            <Link href="/genres" className="text-gray-300 transition-colors font-medium" onMouseEnter={(e) => e.currentTarget.style.color = '#FF2400'} onMouseLeave={(e) => e.currentTarget.style.color = ''}>
               Genres
             </Link>
           </div>
@@ -72,36 +72,46 @@ export default function Navbar() {
               {/* Mobile Navigation Links */}
               <Link 
                 href="/" 
-                className="text-gray-300 hover:text-purple-400 transition-colors font-medium py-2"
+                className="text-gray-300 transition-colors font-medium py-2"
                 onClick={() => setIsMenuOpen(false)}
+                onMouseEnter={(e) => e.currentTarget.style.color = '#FF2400'} 
+                onMouseLeave={(e) => e.currentTarget.style.color = ''}
               >
                 Home
               </Link>
               <Link 
                 href="/trending" 
-                className="text-gray-300 hover:text-purple-400 transition-colors font-medium py-2"
+                className="text-gray-300 transition-colors font-medium py-2"
                 onClick={() => setIsMenuOpen(false)}
+                onMouseEnter={(e) => e.currentTarget.style.color = '#FF2400'} 
+                onMouseLeave={(e) => e.currentTarget.style.color = ''}
               >
                 Trending
               </Link>
               <Link 
                 href="/popular" 
-                className="text-gray-300 hover:text-purple-400 transition-colors font-medium py-2"
+                className="text-gray-300 transition-colors font-medium py-2"
                 onClick={() => setIsMenuOpen(false)}
+                onMouseEnter={(e) => e.currentTarget.style.color = '#FF2400'} 
+                onMouseLeave={(e) => e.currentTarget.style.color = ''}
               >
                 Popular
               </Link>
               <Link 
                 href="/movies" 
-                className="text-gray-300 hover:text-purple-400 transition-colors font-medium py-2"
+                className="text-gray-300 transition-colors font-medium py-2"
                 onClick={() => setIsMenuOpen(false)}
+                onMouseEnter={(e) => e.currentTarget.style.color = '#FF2400'} 
+                onMouseLeave={(e) => e.currentTarget.style.color = ''}
               >
                 Movies
               </Link>
               <Link 
                 href="/genres" 
-                className="text-gray-300 hover:text-purple-400 transition-colors font-medium py-2"
+                className="text-gray-300 transition-colors font-medium py-2"
                 onClick={() => setIsMenuOpen(false)}
+                onMouseEnter={(e) => e.currentTarget.style.color = '#FF2400'} 
+                onMouseLeave={(e) => e.currentTarget.style.color = ''}
               >
                 Genres
               </Link>
