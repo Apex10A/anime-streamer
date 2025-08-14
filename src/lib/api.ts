@@ -11,6 +11,11 @@ import {
   ScheduleResponse,
   NextEpisodeScheduleResponse,
   QtipResponse,
+  CharactersListResponse,
+  StreamingResponse,
+  ServersResponse,
+  CharacterDetailsResponse,
+  VoiceActorDetailsResponse,
   Anime 
 } from '@/types/anime';
 
@@ -203,6 +208,40 @@ export function transformSearchSuggestionToAnime(suggestion: SearchSuggestRespon
       showType: suggestion.showType,
     },
   };
+}
+
+// Get characters list for an anime
+export async function getCharactersList(animeId: string, page: number = 1): Promise<CharactersListResponse> {
+  return apiRequest<CharactersListResponse>(`/api/character/list/${encodeURIComponent(animeId)}?page=${page}`);
+}
+
+// Get streaming info
+export async function getStreamingInfo(params: {
+  id: string;
+  server: string;
+  type: string;
+}): Promise<StreamingResponse> {
+  const searchParams = new URLSearchParams();
+  searchParams.append('id', params.id);
+  searchParams.append('server', params.server);
+  searchParams.append('type', params.type);
+  
+  return apiRequest<StreamingResponse>(`/api/stream?${searchParams.toString()}`);
+}
+
+// Get available servers for an episode
+export async function getServers(episodeId: string): Promise<ServersResponse> {
+  return apiRequest<ServersResponse>(`/api/servers/${encodeURIComponent(episodeId)}`);
+}
+
+// Get character details
+export async function getCharacterDetails(characterId: string): Promise<CharacterDetailsResponse> {
+  return apiRequest<CharacterDetailsResponse>(`/api/character/${encodeURIComponent(characterId)}`);
+}
+
+// Get voice actor details
+export async function getVoiceActorDetails(actorId: string): Promise<VoiceActorDetailsResponse> {
+  return apiRequest<VoiceActorDetailsResponse>(`/api/actors/${encodeURIComponent(actorId)}`);
 }
 
 // Available categories for easy reference
