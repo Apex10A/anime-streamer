@@ -304,3 +304,127 @@ export interface QtipResponse {
     watchLink: string;
   };
 }
+
+// Characters List API Response
+export interface CharactersListResponse {
+  success: boolean;
+  results: {
+    currentPage: number;
+    totalPages: number;
+    data: {
+      character: {
+        id: string;
+        poster: string;
+        name: string;
+        cast: string;
+      };
+      voiceActors: {
+        id: string;
+        poster: string;
+        name: string;
+      }[];
+    }[];
+  };
+}
+
+// Streaming API Response
+export interface StreamingResponse {
+  success: boolean;
+  results: {
+    streamingLink: {
+      id: number;
+      type: string;
+      link: {
+        file: string;
+        type: string;
+      };
+      tracks: {
+        file: string;
+        label: string;
+        kind: string;
+        default: boolean;
+      }[];
+      intro: any;
+      outro: any;
+      server: string;
+    }[];
+    servers: {
+      type: string;
+      data_id: number;
+      server_id: number;
+      server_name: string;
+    }[];
+  };
+}
+
+// Servers API Response
+export interface ServersResponse {
+  success: boolean;
+  results: {
+    type: string;
+    data_id: number;
+    server_id: number;
+    serverName: string;
+  }[];
+}
+
+// Character Details API Response
+export interface CharacterDetailsResponse {
+  success: boolean;
+  results: {
+    data: {
+      id: string;
+      name: string;
+      profile: string;
+      japaneseName: string;
+      about: {
+        description: string;
+        style: string;
+      };
+      voiceActors: {
+        name: string;
+        profile: string;
+        language: string;
+        id: string;
+      }[];
+      animeography: {
+        title: string;
+        id: string;
+        role: string;
+        type: string;
+        poster: string;
+      }[];
+    }[];
+  };
+}
+
+// Voice Actor Details API Response
+export interface VoiceActorDetailsResponse {
+  success: boolean;
+  results: {
+    data: {
+      id: string;
+      name: string;
+      profile: string;
+      japaneseName: string;
+      about: {
+        description: string;
+        style: string;
+      };
+      roles: {
+        anime: {
+          title: string;
+          poster: string;
+          type: string;
+          year: string;
+          id: string;
+        };
+        character: {
+          name: string;
+          profile: string;
+          role: string;
+        };
+      }[];
+    }[];
+  };
+}

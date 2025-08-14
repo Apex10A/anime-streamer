@@ -112,6 +112,33 @@ export default function Navbar() {
               >
                 Genres
               </Link>
+              <Link 
+                href="/random" 
+                className="text-gray-300 transition-colors font-medium py-2"
+                onClick={() => setIsMenuOpen(false)}
+                onMouseEnter={(e) => e.currentTarget.style.color = '#FF2400'} 
+                onMouseLeave={(e) => e.currentTarget.style.color = ''}
+              >
+                Random
+              </Link>
+              <Link 
+                href="/schedule" 
+                className="text-gray-300 transition-colors font-medium py-2"
+                onClick={() => setIsMenuOpen(false)}
+                onMouseEnter={(e) => e.currentTarget.style.color = '#FF2400'} 
+                onMouseLeave={(e) => e.currentTarget.style.color = ''}
+              >
+                Schedule
+              </Link>
+              <Link 
+                href="/filter" 
+                className="text-gray-300 transition-colors font-medium py-2"
+                onClick={() => setIsMenuOpen(false)}
+                onMouseEnter={(e) => e.currentTarget.style.color = '#FF2400'} 
+                onMouseLeave={(e) => e.currentTarget.style.color = ''}
+              >
+                Advanced Search
+              </Link>
             </div>
           </div>
         )}
