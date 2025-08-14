@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import SearchBar from './SearchBar';
+import Image from 'next/image';
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -11,17 +12,16 @@ export default function Navbar() {
     <nav className="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-md border-b border-gray-800/50">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
-          {/* Logo */}
           <Link href="/" className="flex items-center space-x-2 group">
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform" style={{ backgroundColor: '#FF2400' }}>
+            <Image src="/otawatch.png" alt="Logo" width={120} height={120} />
+            {/* <div className="w-8 h-8 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform" style={{ backgroundColor: '#FF2400' }}>
               <span className="text-white font-bold text-lg">L</span>
             </div>
             <span className="text-xl font-bold" style={{ color: '#FF2400' }}>
               Luffy
-            </span>
+            </span> */}
           </Link>
 
-          {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
             <Link href="/" className="text-gray-300 transition-colors font-medium" style={{ '--hover-color': '#FF2400' } as React.CSSProperties} onMouseEnter={(e) => e.currentTarget.style.color = '#FF2400'} onMouseLeave={(e) => e.currentTarget.style.color = ''}>
               Home
@@ -40,12 +40,10 @@ export default function Navbar() {
             </Link>
           </div>
 
-          {/* Search Bar - Desktop */}
           <div className="hidden lg:block flex-1 max-w-md mx-8">
             <SearchBar placeholder="Search anime..." />
           </div>
 
-          {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             className="md:hidden text-gray-300 hover:text-white transition-colors"
@@ -60,7 +58,6 @@ export default function Navbar() {
           </button>
         </div>
 
-        {/* Mobile Menu */}
         {isMenuOpen && (
           <div className="md:hidden py-4 border-t border-gray-800/50">
             <div className="flex flex-col space-y-4">

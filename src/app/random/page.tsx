@@ -1,41 +1,34 @@
 'use client';
 
-import { useParams } from 'next/navigation';
-import { useFetch } from '@/hooks/usefetch';
-import { AnimeInfoResponse } from '@/types/anime';
-import { getAnimeInfo, transformDetailedAnimeToAnime } from '@/lib/api';
 import { useEffect, useState } from 'react';
+import { RandomAnimeResponse } from '@/types/anime';
+import { getRandomAnime, transformDetailedAnimeToAnime, transformApiAnimeToAnime } from '@/lib/api';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import AnimeCard from '@/components/Animecard';
 import SkeletonLoader from '@/components/SkeletonLoader';
 
-export default function AnimeDetailPage() {
-  const params = useParams();
-  const id = params.id as string;
-  
-  const [animeData, setAnimeData] = useState<AnimeInfoResponse | null>(null);
+export default function RandomAnimePage() {
+  const [randomData, setRandomData] = useState<RandomAnimeResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchAnimeInfo = async () => {
-      if (!id) return;
-      
-      try {
-        setLoading(true);
-        setError(null);
-        const data = await getAnimeInfo(id);
-        setAnimeData(data);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to fetch anime info');
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchRandomAnime = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const data = await getRandomAnime();
+      setRandomData(data);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to fetch random anime');
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchAnimeInfo();
-  }, [id]);
+  useEffect(() => {
+    fetchRandomAnime();
+  }, []);
 
   if (loading) {
     return (
@@ -43,7 +36,7 @@ export default function AnimeDetailPage() {
         <Navbar />
         <main className="container mx-auto px-4 pt-24 pb-16">
           <div className="animate-pulse">
-            <div className="flex flex-col lg:flex-row gap-8">
+            <div className="flex flex-col lg:flex-row gap-8 mb-12">
               <div className="lg:w-1/3">
                 <div className="bg-gray-700 rounded-lg aspect-[3/4] w-full max-w-sm mx-auto"></div>
               </div>
@@ -75,8 +68,14 @@ export default function AnimeDetailPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <h2 className="text-xl font-semibold text-white mb-2">Error Loading Anime</h2>
-            <p className="text-gray-400">{error}</p>
+            <h2 className="text-xl font-semibold text-white mb-2">Error Loading Random Anime</h2>
+            <p className="text-gray-400 mb-4">{error}</p>
+            <button
+              onClick={fetchRandomAnime}
+              className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded-lg transition-colors"
+            >
+              Try Again
+            </button>
           </div>
         </main>
         <Footer />
@@ -84,14 +83,20 @@ export default function AnimeDetailPage() {
     );
   }
 
-  if (!animeData?.results) {
+  if (!randomData?.results) {
     return (
       <div className="min-h-screen">
         <Navbar />
         <main className="container mx-auto px-4 pt-24 pb-16">
           <div className="text-center py-16">
-            <h2 className="text-xl font-semibold text-white mb-2">Anime Not Found</h2>
-            <p className="text-gray-400">The requested anime could not be found.</p>
+            <h2 className="text-xl font-semibold text-white mb-2">No Random Anime Found</h2>
+            <p className="text-gray-400 mb-4">Unable to fetch random anime at this time.</p>
+            <button
+              onClick={fetchRandomAnime}
+              className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded-lg transition-colors"
+            >
+              Try Again
+            </button>
           </div>
         </main>
         <Footer />
@@ -99,7 +104,7 @@ export default function AnimeDetailPage() {
     );
   }
 
-  const { data, seasons } = animeData.results;
+  const { data, related_data, recommended_data, seasons } = randomData.results;
   const anime = transformDetailedAnimeToAnime(data);
 
   return (
@@ -107,7 +112,22 @@ export default function AnimeDetailPage() {
       <Navbar />
       
       <main className="container mx-auto px-4 pt-24 pb-16">
-        {/* Hero Section */}
+        {/* Header with Random Button */}
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-3xl font-bold text-white">Random Anime Discovery</h1>
+          <button
+            onClick={fetchRandomAnime}
+            disabled={loading}
+            className="bg-purple-600 hover:bg-purple-700 disabled:bg-gray-600 text-white px-6 py-2 rounded-lg transition-colors flex items-center gap-2"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            </svg>
+            {loading ? 'Loading...' : 'Get Another Random'}
+          </button>
+        </div>
+
+        {/* Main Anime Info */}
         <div className="flex flex-col lg:flex-row gap-8 mb-12">
           {/* Poster */}
           <div className="lg:w-1/3">
@@ -129,9 +149,9 @@ export default function AnimeDetailPage() {
             <div className="space-y-6">
               {/* Title */}
               <div>
-                <h1 className="text-4xl font-bold text-white mb-2">{data.title}</h1>
+                <h2 className="text-4xl font-bold text-white mb-2">{data.title}</h2>
                 {data.japanese_title && data.japanese_title !== data.title && (
-                  <h2 className="text-xl text-gray-300">{data.japanese_title}</h2>
+                  <h3 className="text-xl text-gray-300">{data.japanese_title}</h3>
                 )}
               </div>
 
@@ -181,7 +201,7 @@ export default function AnimeDetailPage() {
               {/* Genres */}
               {anime.genres && anime.genres.length > 0 && (
                 <div>
-                  <h3 className="text-lg font-semibold text-white mb-2">Genres</h3>
+                  <h4 className="text-lg font-semibold text-white mb-2">Genres</h4>
                   <div className="flex flex-wrap gap-2">
                     {anime.genres.map((genre, index) => (
                       <span
@@ -198,29 +218,61 @@ export default function AnimeDetailPage() {
               {/* Synopsis */}
               {data.animeInfo.Overview && (
                 <div>
-                  <h3 className="text-lg font-semibold text-white mb-2">Synopsis</h3>
+                  <h4 className="text-lg font-semibold text-white mb-2">Synopsis</h4>
                   <p className="text-gray-300 leading-relaxed">{data.animeInfo.Overview}</p>
                 </div>
               )}
 
-              {/* Additional Info */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-gray-700">
-                {data.animeInfo.Japanese && (
-                  <div>
-                    <span className="text-gray-400">Japanese:</span>
-                    <span className="ml-2 text-white">{data.animeInfo.Japanese}</span>
-                  </div>
-                )}
-                {data.animeInfo.Synonyms && (
-                  <div>
-                    <span className="text-gray-400">Synonyms:</span>
-                    <span className="ml-2 text-white">{data.animeInfo.Synonyms}</span>
-                  </div>
-                )}
+              {/* View Details Button */}
+              <div>
+                <a
+                  href={`/anime/${data.id}`}
+                  className="inline-block bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg transition-colors"
+                >
+                  View Full Details
+                </a>
               </div>
             </div>
           </div>
         </div>
+
+        {/* Related Anime */}
+        {related_data && related_data.length > 0 && related_data[0] && related_data[0].length > 0 && (
+          <div className="mb-12">
+            <h3 className="text-2xl font-bold text-white mb-6">Related Anime</h3>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+              {related_data[0].slice(0, 12).map((relatedAnime) => {
+                const transformedAnime = transformApiAnimeToAnime({
+                  ...relatedAnime,
+                  poster: relatedAnime.poster,
+                  description: '',
+                  showType: relatedAnime.tvInfo.showType,
+                  adultContent: false,
+                });
+                return <AnimeCard key={relatedAnime.id} anime={transformedAnime} />;
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* Recommended Anime */}
+        {recommended_data && recommended_data.length > 0 && recommended_data[0] && recommended_data[0].length > 0 && (
+          <div className="mb-12">
+            <h3 className="text-2xl font-bold text-white mb-6">Recommended Anime</h3>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+              {recommended_data[0].slice(0, 12).map((recommendedAnime) => {
+                const transformedAnime = transformApiAnimeToAnime({
+                  ...recommendedAnime,
+                  poster: recommendedAnime.poster,
+                  description: '',
+                  showType: recommendedAnime.tvInfo.showType,
+                  adultContent: false,
+                });
+                return <AnimeCard key={recommendedAnime.id} anime={transformedAnime} />;
+              })}
+            </div>
+          </div>
+        )}
 
         {/* Seasons */}
         {seasons && seasons.length > 0 && (

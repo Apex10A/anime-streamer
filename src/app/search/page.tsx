@@ -1,8 +1,9 @@
 'use client';
 
 import { useSearchParams } from 'next/navigation';
-import { useFetch } from '@/hooks/usefetch';
-import { Anime } from '@/types/anime';
+import { useEffect, useState } from 'react';
+import { SearchResponse } from '@/types/anime';
+import { searchAnime, transformSearchResultToAnime } from '@/lib/api';
 import AnimeCard from '@/components/Animecard';
 import SkeletonLoader from '@/components/SkeletonLoader';
 import Navbar from '@/components/Navbar';
@@ -12,34 +13,36 @@ export default function SearchPage() {
   const searchParams = useSearchParams();
   const query = searchParams.get('q') || '';
 
-  // In a real app, this would be an actual API call
-  // const { data, loading, error } = useFetch<Anime[]>(`${process.env.NEXT_PUBLIC_API_URL}/search?q=${query}`);
-  
-  // Mock search results for demonstration
-  const mockResults: Anime[] = [
-    {
-      id: '1',
-      title: 'Attack on Titan',
-      image: 'https://cdn.myanimelist.net/images/anime/10/47347.jpg',
-      genres: ['Action', 'Drama', 'Fantasy'],
-      rating: 9.0,
-      status: 'Completed',
-      totalEpisodes: 75
-    },
-    {
-      id: '2',
-      title: 'Demon Slayer',
-      image: 'https://cdn.myanimelist.net/images/anime/1286/99889.jpg',
-      genres: ['Action', 'Supernatural', 'Historical'],
-      rating: 8.7,
-      status: 'Ongoing',
-      totalEpisodes: 44
-    }
-  ];
+  const [searchData, setSearchData] = useState<SearchResponse | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const filteredResults = mockResults.filter(anime => 
-    anime.title.toLowerCase().includes(query.toLowerCase())
-  );
+  useEffect(() => {
+    const performSearch = async () => {
+      if (!query.trim()) {
+        setSearchData(null);
+        setLoading(false);
+        setError(null);
+        return;
+      }
+      
+      try {
+        setLoading(true);
+        setError(null);
+        const data = await searchAnime(query);
+        setSearchData(data);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to search anime');
+        setSearchData(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    performSearch();
+  }, [query]);
+
+  const results = searchData?.results ? searchData.results.map(transformSearchResultToAnime) : [];
 
   return (
     <div className="min-h-screen">
@@ -57,7 +60,7 @@ export default function SearchPage() {
           )}
         </div>
 
-        {!query ? (
+{!query ? (
           <div className="text-center py-16">
             <div className="text-gray-400 mb-4">
               <svg className="w-16 h-16 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -67,9 +70,25 @@ export default function SearchPage() {
             <h2 className="text-xl font-semibold text-white mb-2">Start Your Search</h2>
             <p className="text-gray-400">Enter a search term to find your favorite anime</p>
           </div>
-        ) : filteredResults.length > 0 ? (
+        ) : loading ? (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-            {filteredResults.map((anime) => (
+            {Array.from({ length: 12 }).map((_, index) => (
+              <SkeletonLoader key={index} />
+            ))}
+          </div>
+        ) : error ? (
+          <div className="text-center py-16">
+            <div className="text-red-400 mb-4">
+              <svg className="w-16 h-16 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <h2 className="text-xl font-semibold text-white mb-2">Search Error</h2>
+            <p className="text-gray-400">{error}</p>
+          </div>
+        ) : results.length > 0 ? (
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+            {results.map((anime) => (
               <AnimeCard key={anime.id} anime={anime} />
             ))}
           </div>
